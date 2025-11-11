@@ -1,13 +1,13 @@
 # Cardano Summit Hack - URL to Markdown Agent
 
-A CrewAI-powered agent that transforms web page content into well-formatted Markdown using Google's Gemini API.
+A CrewAI-powered agent that scrapes web page content and transforms it into well-formatted Markdown using Google's Gemini API.
 
 ## Features
 
 - Fetches content from any URL
 - Uses CrewAI with multiple specialized agents:
-  - **Web Content Analyzer**: Extracts and analyzes key information
-  - **Markdown Formatter**: Transforms content into clean markdown
+  - **Proposal Details Scraper**: Extracts exact proposal details without analysis
+  - **Markdown Formatter**: Transforms content into clean markdown preserving exact details
 - Powered by Google Gemini 2.5 Flash model
 - Saves output to a markdown file
 
@@ -55,8 +55,8 @@ python url_to_markdown_agent.py
 
 The agent will:
 1. Fetch content from the URL (default: Catalyst Explorer proposal page)
-2. Analyze the content to extract key information
-3. Transform it into well-formatted markdown
+2. Scrape the content to extract exact proposal details
+3. Transform it into well-formatted markdown without analysis
 4. Save the output to `output.md`
 
 ### Customize the URL
