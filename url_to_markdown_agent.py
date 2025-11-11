@@ -17,7 +17,15 @@ if not GOOGLE_API_KEY:
 
 
 def fetch_url_content(url):
-    """Fetch and parse content from a URL"""
+    """
+    Fetch and parse content from a URL.
+    
+    Args:
+        url: The URL to fetch content from
+        
+    Returns:
+        str: The cleaned text content from the URL, or an error message
+    """
     try:
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
@@ -45,7 +53,15 @@ def fetch_url_content(url):
 
 
 def create_url_to_markdown_crew(url):
-    """Create a crew to transform URL content to markdown"""
+    """
+    Create a crew to transform URL content to markdown.
+    
+    Args:
+        url: The URL to fetch and transform
+        
+    Returns:
+        Crew: A configured CrewAI crew with agents and tasks
+    """
     
     # Initialize Gemini LLM using CrewAI's LLM class
     gemini_llm = LLM(
