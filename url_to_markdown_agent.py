@@ -72,12 +72,13 @@ def create_url_to_markdown_crew(url):
     # Fetch content from URL
     url_content = fetch_url_content(url)
     
-    # Create Web Content Analyzer Agent
-    content_analyzer = Agent(
-        role='Web Content Analyzer',
-        goal=f'Extract and analyze key information from the web content at {url}',
-        backstory='You are an expert at analyzing web content and identifying important information, '
-                  'including titles, descriptions, dates, budgets, and other relevant details.',
+    # Create Proposal Details Scraper Agent
+    content_scraper = Agent(
+        role='Proposal Details Scraper',
+        goal=f'Extract exact proposal details from the web content at {url} without analysis',
+        backstory='You are an expert at scraping web content and extracting exact details '
+                  'from proposals, including all titles, descriptions, dates, budgets, and other information '
+                  'exactly as they appear on the page.',
         verbose=True,
         allow_delegation=False,
         llm=gemini_llm
@@ -86,59 +87,61 @@ def create_url_to_markdown_crew(url):
     # Create Markdown Formatter Agent
     markdown_formatter = Agent(
         role='Markdown Documentation Specialist',
-        goal='Transform extracted information into well-structured markdown format',
+        goal='Transform scraped proposal details into well-structured markdown format without analysis or interpretation',
         backstory='You are a skilled technical writer who excels at creating clean, '
-                  'well-organized markdown documentation that is easy to read and understand.',
+                  'well-organized markdown documentation that preserves exact details from the source '
+                  'without adding interpretation or analysis.',
         verbose=True,
         allow_delegation=False,
         llm=gemini_llm
     )
     
-    # Task to analyze content
-    analyze_task = Task(
+    # Task to scrape exact content
+    scrape_task = Task(
         description=f"""
-        Analyze the following web content from {url} and extract all relevant information:
+        Scrape the following web content from {url} and extract ALL proposal details exactly as they appear:
         
         Content:
-        {url_content[:4000]}  
+        {url_content[:8000]}  
         
-        Identify and extract:
-        - Main title/heading
-        - Project/proposal description
-        - Key details (budget, dates, status, etc.)
-        - Any important sections or subsections
+        Extract the exact details including:
+        - Main title/heading (exact text)
+        - Complete proposal description (verbatim)
+        - All key details (budget, dates, status, team, etc.) exactly as shown
+        - All sections and subsections with their exact content
         - Links and references
-        - Any other relevant information
+        - Any other information present on the page
         
-        Provide a structured summary of all important information.
+        DO NOT analyze, interpret, or summarize. Provide the exact details as they appear on the page.
         """,
-        agent=content_analyzer,
-        expected_output='A structured summary of all key information from the webpage'
+        agent=content_scraper,
+        expected_output='A complete extraction of all exact proposal details from the webpage without analysis'
     )
     
     # Task to convert to markdown
     markdown_task = Task(
         description="""
-        Take the analyzed content and transform it into well-formatted markdown.
+        Take the scraped proposal details and transform them into well-formatted markdown.
         
         The markdown should:
+        - Preserve ALL exact details from the scraped content without interpretation
         - Have a clear hierarchical structure with appropriate headers (# ## ###)
         - Use bullet points and lists where appropriate
-        - Include any important links
+        - Include all links exactly as they appear
         - Be well-organized and easy to read
-        - Preserve all important information
         - Use markdown formatting features like bold, italic, code blocks, etc. where appropriate
+        - NOT add any analysis, commentary, or interpretation
         
-        Create a comprehensive markdown document.
+        Create a comprehensive markdown document with the exact proposal details.
         """,
         agent=markdown_formatter,
-        expected_output='A well-formatted markdown document containing all the information from the webpage'
+        expected_output='A well-formatted markdown document containing all exact proposal details from the webpage without analysis'
     )
     
     # Create crew
     crew = Crew(
-        agents=[content_analyzer, markdown_formatter],
-        tasks=[analyze_task, markdown_task],
+        agents=[content_scraper, markdown_formatter],
+        tasks=[scrape_task, markdown_task],
         verbose=True
     )
     

@@ -6,18 +6,19 @@ This is an example of what the agent produces when processing a URL.
 
 1. **Fetches Content**: The agent fetches the HTML content from the provided URL
 2. **Cleans Data**: Removes scripts, styles, and unnecessary whitespace
-3. **Analyzes Content**: The Web Content Analyzer agent identifies key information like:
-   - Titles and headings
-   - Descriptions
-   - Dates and budgets
-   - Important sections
+3. **Scrapes Details**: The Proposal Details Scraper agent extracts exact information like:
+   - Titles and headings (exact text)
+   - Complete descriptions (verbatim)
+   - Dates and budgets (as shown)
+   - Important sections (exact content)
    - Links and references
 
-4. **Formats to Markdown**: The Markdown Formatter agent transforms the analyzed content into:
+4. **Formats to Markdown**: The Markdown Formatter agent transforms the scraped content into:
    - Well-structured headers (# ## ###)
    - Bullet points and lists
    - Properly formatted text with **bold**, *italic*, etc.
    - Clean, readable markdown
+   - Preserves exact details without analysis or interpretation
 
 ## Sample Input
 
