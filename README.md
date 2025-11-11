@@ -68,6 +68,17 @@ def main():
     # ... rest of the code
 ```
 
+Or use the `example_usage.py` file as a starting point for your own implementation.
+
+## Files in This Repository
+
+- `url_to_markdown_agent.py`: Main agent implementation
+- `test_structure.py`: Installation validation script
+- `example_usage.py`: Simple usage examples
+- `EXAMPLE_OUTPUT.md`: Description of expected output format
+- `requirements.txt`: Python dependencies
+- `.env.example`: Example environment configuration
+
 ## Example
 
 Default example transforms this URL:
