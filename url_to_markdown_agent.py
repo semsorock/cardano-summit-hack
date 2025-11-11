@@ -3,8 +3,7 @@ CrewAI Agent to Transform URL Content to Markdown using Gemini API
 """
 import os
 from dotenv import load_dotenv
-from crewai import Agent, Task, Crew
-import google.generativeai as genai
+from crewai import Agent, Task, Crew, LLM
 import requests
 from bs4 import BeautifulSoup
 
@@ -15,20 +14,6 @@ load_dotenv()
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 if not GOOGLE_API_KEY:
     raise ValueError("GOOGLE_API_KEY not found in environment variables. Please set it in .env file")
-
-genai.configure(api_key=GOOGLE_API_KEY)
-
-
-class GeminiLLM:
-    """Custom LLM wrapper for Gemini API"""
-    
-    def __init__(self, model_name="gemini-2.5-flash"):
-        self.model = genai.GenerativeModel(model_name)
-    
-    def __call__(self, prompt):
-        """Call the Gemini model with a prompt"""
-        response = self.model.generate_content(prompt)
-        return response.text
 
 
 def fetch_url_content(url):
@@ -62,8 +47,11 @@ def fetch_url_content(url):
 def create_url_to_markdown_crew(url):
     """Create a crew to transform URL content to markdown"""
     
-    # Initialize Gemini LLM
-    gemini_llm = GeminiLLM("gemini-2.5-flash")
+    # Initialize Gemini LLM using CrewAI's LLM class
+    gemini_llm = LLM(
+        model="gemini/gemini-2.5-flash",
+        api_key=GOOGLE_API_KEY
+    )
     
     # Fetch content from URL
     url_content = fetch_url_content(url)

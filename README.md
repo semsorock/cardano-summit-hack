@@ -37,6 +37,17 @@ A CrewAI-powered agent that transforms web page content into well-formatted Mark
 
 ## Usage
 
+### Test the Installation
+
+Before running the agent, you can verify the installation:
+```bash
+python test_structure.py
+```
+
+This will validate that all components are properly installed and configured.
+
+### Run the Agent
+
 Run the agent with the default example URL:
 ```bash
 python url_to_markdown_agent.py
